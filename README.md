@@ -64,3 +64,8 @@ apps-script/Code.gs   Backend (dán vào Google Apps Script, KHÔNG up lên GitH
 
 ## Thêm mẫu thiệp mới
 Thêm một phần tử vào mảng `TEMPLATES` trong `js/lib.js` (bộ màu `vars` mới), và thêm `id` đó vào mảng `TEMPLATE_IDS` ở đầu `apps-script/Code.gs` (rồi triển khai lại phiên bản mới).
+
+## Cấu trúc 2 trang (Duyên Thư)
+- `index.html`: trang chủ giới thiệu (giao diện kiểu Dentv, đã đổi thương hiệu Duyên Thư). Các nút Mẫu thiệp / Tạo thiệp / Bảng giá dẫn sang `app.html`.
+- `app.html`: ứng dụng thật (xem demo, đăng ký, chọn mẫu, QR thanh toán, quản lý thiệp, admin).
+- Lưu ý: CSS và ảnh của `index.html` đang tải từ server Dentv (`dentv-thiepcuoi.tranden.net`), nên server đó phải còn hoạt động.

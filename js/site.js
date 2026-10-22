@@ -44,7 +44,7 @@ function bindCopy(root) {
 function renderChrome() {
   const u = state.user;
   $header.innerHTML = `<header class="site-header"><div class="wrap nav">
-    <a href="${href('/')}" class="brand"><span class="brand-mark">♥</span> ${esc(SITE_NAME)}</a>
+    <a href="./index.html" class="brand"><img src="assets/logo-header.png" alt="${esc(SITE_NAME)}" style="height:40px;width:auto"></a>
     <nav class="nav-links" aria-label="Chính">
       <a href="${href('/mau-thiep')}">Mẫu thiệp</a>
       <a href="${href('/bang-gia')}">Bảng giá</a>
