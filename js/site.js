@@ -1,7 +1,7 @@
 import { api, getToken, setToken, uploadImage } from './api.js';
 import { renderInvitation } from './invitation.js';
 import {
-  COLORS, PAID_DAYS, PRICE, SAMPLE, SITE_NAME, STYLES, TEMPLATES, TRIAL_DAYS,
+  COLORS, PAID_DAYS, PRICE, SAMPLE, SAMPLE_ANH_DAO, SITE_NAME, STYLES, TEMPLATES, TRIAL_DAYS,
   defaultData, esc, fmtTime, fmtVnd, getTemplate, inviteUrl, isPaid, lastWord, loadInvitationCss,
   mergeData, statusBadge, thumb, unloadInvitationCss,
 } from './lib.js';
@@ -217,7 +217,7 @@ async function pageDemo({ params }, rid) {
   $app.innerHTML = `<div class="demo-bar"><a href="${href('/mau-thiep')}">← Tất cả mẫu</a><span>${esc(tpl.name)}</span>
     <a href="${href(`/tao-thiep?mau=${tpl.id}`)}" class="btn btn-primary btn-sm">Chọn mẫu này · ${fmtVnd(PRICE)}</a></div><div class="demo-spacer"></div><div id="demo-root"></div>`;
   const off = renderInvitation(document.getElementById('demo-root'), {
-    tpl, data: SAMPLE, slug: 'demo',
+    tpl, data: (String(tpl.id).startsWith('hoa-anh-dao-') ? SAMPLE_ANH_DAO : SAMPLE), slug: 'demo',
     guest: { name: 'Anh Chị Khách Quý', token: '' },
     wishes: [
       { id: 1, name: 'Bạn Lan', attending: 1, count: 2, message: 'Chúc hai bạn trăm năm hạnh phúc, sớm có tin vui nhé!' },

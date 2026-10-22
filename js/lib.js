@@ -243,6 +243,29 @@ export const SAMPLE = {
   music: '',
 };
 
+
+// Dữ liệu mẫu lấy từ file "Anh Đào – Demo" do người dùng cung cấp.
+// Chỉ điền các trường có trong file nguồn; không tự tạo thông tin còn thiếu.
+export const SAMPLE_ANH_DAO = {
+  groomName: 'Minh Hoàng',
+  brideName: 'Mai Hương',
+  groomFull: 'Trần Minh Hoàng',
+  brideFull: 'Phạm Mai Hương',
+  groomParents: "Ông: Nguyễn Quang Thắng\nBà: Nguyễn Thị Vân\nXã K'Dang - Tỉnh Gia Lai",
+  brideParents: "Ông: Nguyễn Quang Thắng\nBà: Nguyễn Thị Vân\nXã K'Dang - Tỉnh Gia Lai",
+  date: '2026-03-08',
+  lunarDate: 'Nhằm ngày 20 tháng 01 năm Bính Ngọ',
+  ceremonyTime: '08:25',
+  partyTime: '08:25',
+  venue: 'TƯ GIA NHÀ TRAI',
+  address: 'Khu 4, Xã Phùng Nguyên, Tỉnh Phú Thọ',
+  mapUrl: '',
+  heroPhoto: '', groomPhoto: '', bridePhoto: '', gallery: [],
+  quote: 'Hôn nhân là chuyện cả đời, yêu người vừa ý, cưới người mình thương.',
+  story: '',
+  giftGroom: { ...EMPTY_GIFT }, giftBride: { ...EMPTY_GIFT }, music: '',
+};
+
 export function thumb(tpl, { groom = 'Khang', bride = 'Hà', date = '20 · 12' } = {}) {
   return `<div class="thumb l-${tpl.layout} d-${tpl.design || 'classic'}" style="${varStyle(tpl.vars)}" aria-hidden="true">
   <div class="t-top">${tpl.layout === 'hy' ? '<div class="t-hy">囍</div>' : ''}<span class="t-kick">Thiệp mời cưới</span>
