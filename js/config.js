@@ -2,7 +2,7 @@
 export const CONFIG = {
   // Dán URL Web App của Google Apps Script vào đây (xem README, bước 3).
   // Dạng: https://script.google.com/macros/s/AKfycb.../exec
-  API_URL: '',
+  API_URL: 'https://script.google.com/macros/s/AKfycbyGxnTQmStp9aLOW8wD4XbHNXFUH3mBbB6bYVXlaOvvvlXuf1kFm_xbwrdERkeEunL1/exec',
 
   SITE_NAME: 'Duyên Lành',
 
