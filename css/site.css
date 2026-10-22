@@ -236,3 +236,20 @@ p { margin: 0 0 1em; }
   .tpl-preview-actions .btn { padding: 8px 4px; font-size: .7rem; }
   .tpl-new-badge { top: 8px; left: 8px; }
 }
+
+
+/* Distinct miniature compositions for the ten invitation design families */
+.thumb.d-editorial { padding: 9% 7%; }
+.thumb.d-editorial::before { content: ''; position: absolute; inset: 8% 7%; border-top: 1px solid var(--accent2); border-bottom: 1px solid var(--accent2); pointer-events: none; }
+.thumb.d-arch .t-top { border: 1px solid var(--accent2); border-radius: 48% 48% 0 0 / 28% 28% 0 0; padding: 20% 5% 10%; }
+.thumb.d-frame { padding: 7%; }
+.thumb.d-frame::before { content: ''; position: absolute; inset: 5%; border: 1px double var(--accent2); pointer-events: none; }
+.thumb.d-botanical::before { content: '❧'; position: absolute; top: 3%; left: 4%; font-size: 2.4rem; color: var(--accent2); }
+.thumb.d-botanical::after { content: '❧'; position: absolute; bottom: 3%; right: 4%; font-size: 2.4rem; color: var(--accent2); transform: rotate(180deg); }
+.thumb.d-ornate::before { content: '✦'; position: absolute; top: 6%; left: 0; right: 0; text-align: center; color: var(--accent2); font-size: 1.1rem; }
+.thumb.d-modern .t-top { text-align: left; align-items: start; border-left: 3px solid var(--accent); padding-left: 8%; }
+.thumb.d-modern .t-names { justify-items: start; text-align: left; }
+.thumb.d-letterpress { border: 3px double var(--accent2); }
+.thumb.d-letterpress .t-top { border-bottom: 1px solid var(--accent2); }
+.thumb.d-terrace .t-bot { border-top: 1px solid var(--accent2); }
+.thumb.d-monogram .t-top::before { content: '✧'; color: var(--accent2); font-size: 1.1rem; }
