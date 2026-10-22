@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#c2284d">
+  <title>Thiệp mời cưới</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@500;600;700&family=Noto+Serif+SC:wght@600&display=swap">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <div id="root"><p class="muted center" style="padding:60px 20px">Đang tải thiệp...</p></div>
+  <script type="module">
+    import { api, getToken } from './js/api.js';
+    import { renderInvitation } from './js/invitation.js';
+    import { getTemplate, loadInvitationCss, mergeData, esc } from './js/lib.js';
+
+    const q = new URLSearchParams(location.search);
+    const slug = q.get('s') || '';
+    const k = q.get('k') || '';
+    const preview = q.get('preview') === '1';
+    const root = document.getElementById('root');
+
+    function message(title, text) {
+      root.innerHTML = `<div style="min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center">
+        <div><h1 style="font-family:var(--serif);font-size:2.2rem">${esc(title)}</h1>
+        <p style="color:var(--muted);max-width:420px">${esc(text)}</p>
+        <a href="./index.html" class="btn btn-ghost">Về trang chủ</a></div></div>`;
+    }
+
+    try {
+      if (!slug) throw Object.assign(new Error(''), { code: 'not_found' });
+      const r = await api('getPublic', { slug, k, preview });
+      const tpl = getTemplate(r.template) || getTemplate('toi-gian-do');
+      const data = mergeData(r.data);
+      document.title = `${data.groomName} & ${data.brideName} - Thiệp mời cưới`;
+      await loadInvitationCss();
+      renderInvitation(root, {
+        tpl, data, slug,
+        guest: r.guest,
+        wishes: r.wishes || [],
+        skipCover: !!r.ownerPreview,
+      });
+    } catch (e) {
+      if (e.code === 'not_found') message('Không tìm thấy thiệp', 'Đường dẫn bạn mở không tồn tại hoặc thiệp đã bị xoá.');
+      else if (e.code === 'inactive') message('Thiệp tạm thời chưa mở', 'Thiệp mời này đã hết thời gian hiển thị. Vui lòng liên hệ cô dâu chú rể để được hỗ trợ.');
+      else message('Không tải được thiệp', e.message || 'Vui lòng thử lại sau.');
+    }
+  </script>
+</body>
+</html>
