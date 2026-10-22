@@ -460,7 +460,7 @@ function mountEditor($tab, inv) {
           <label class="field">Bố mẹ chú rể<textarea name="groomParents" rows="2" maxlength="200">${g('groomParents')}</textarea><span class="hint">Mỗi người một dòng</span></label>
           <label class="field">Bố mẹ cô dâu<textarea name="brideParents" rows="2" maxlength="200">${g('brideParents')}</textarea></label>
         </div>
-        <div class="row2"><div class="field" id="f-groomPhoto"></div><div class="field" id="f-bridePhoto"></div></div></div>
+      </div>
 
       <div class="fieldset"><h3>Thời gian &amp; địa điểm</h3>
         <div class="row2">
@@ -473,9 +473,7 @@ function mountEditor($tab, inv) {
         <label class="field">Địa chỉ<input name="address" value="${g('address')}" maxlength="200"></label>
         <label class="field">Link Google Maps<input name="mapUrl" value="${g('mapUrl')}" maxlength="500" placeholder="https://maps.google.com/..."><span class="hint">Mở Google Maps, chọn Chia sẻ, sao chép liên kết rồi dán vào đây.</span></label></div>
 
-      <div class="fieldset"><h3>Hình ảnh &amp; lời nhắn</h3>
-        <div class="field" id="f-heroPhoto"></div>
-        <div class="field" id="f-gallery"></div>
+      <div class="fieldset"><h3>Lời nhắn</h3>
         <label class="field">Câu trích dẫn<input name="quote" value="${g('quote')}" maxlength="200"></label>
         <label class="field">Chuyện của chúng mình<textarea name="story" rows="5" maxlength="1200">${g('story')}</textarea></label>
         <label class="field">Nhạc nền (link file .mp3, tuỳ chọn)<input name="music" value="${g('music')}" maxlength="500" placeholder="https://.../nhac.mp3"></label></div>
@@ -499,11 +497,6 @@ function mountEditor($tab, inv) {
   const loadPreview = () => { frame.src = `${inviteUrl(inv.slug)}&preview=1&r=${++rev}`; };
   loadPreview();
 
-  ['groomPhoto', 'bridePhoto', 'heroPhoto'].forEach((n) => {
-    const label = { groomPhoto: 'Ảnh chú rể', bridePhoto: 'Ảnh cô dâu', heroPhoto: 'Ảnh bìa (ảnh lớn đầu thiệp)' }[n];
-    mountImageField(document.getElementById(`f-${n}`), label, n, data[n] || '');
-  });
-  const getGallery = mountGallery(document.getElementById('f-gallery'), (data.gallery || []).slice());
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -519,8 +512,7 @@ function mountEditor($tab, inv) {
         groomParents: v('groomParents'), brideParents: v('brideParents'),
         date: v('date'), lunarDate: v('lunarDate'), ceremonyTime: v('ceremonyTime'), partyTime: v('partyTime'),
         venue: v('venue'), address: v('address'), mapUrl: v('mapUrl'),
-        heroPhoto: form.elements.heroPhoto.value, groomPhoto: form.elements.groomPhoto.value, bridePhoto: form.elements.bridePhoto.value,
-        gallery: getGallery(),
+        heroPhoto: '', groomPhoto: '', bridePhoto: '', gallery: [],
         quote: v('quote'), story: v('story'),
         giftGroom: gift('giftGroom'), giftBride: gift('giftBride'), music: v('music'),
       },
