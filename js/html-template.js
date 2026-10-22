@@ -82,6 +82,8 @@ function fillPhotos(doc, data, keepSample) {
   const imgs = [...doc.querySelectorAll('img.cv-crop')].filter((img) => img.closest('.iv-photo') || /height="(600|525)"/.test(img.getAttribute('src') || ''));
   imgs.forEach((img, i) => {
     if (!pool.length) { img.style.visibility = 'hidden'; return; }
+    img.setAttribute('loading', 'eager');
+    img.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
     img.setAttribute('src', pool[i % pool.length]);
     img.setAttribute('style', 'left:0;top:0;width:100%;height:100%;object-fit:cover;background:none');
   });
@@ -179,6 +181,7 @@ export async function renderHtmlTemplate(root, opts) {
   let html;
   try { html = await loadSource(tpl.html); } catch (e) { root.innerHTML = `<p class="center" style="padding:60px 20px">${esc(e.message)}</p>`; return; }
   const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('meta[name="referrer"]').forEach((n) => n.remove()); // meta no-referrer làm ảnh Google Drive không tải được
   doc.querySelectorAll('.iv-demobar').forEach((n) => n.remove()); // nút "Dùng mẫu này" của bản demo gốc
   fillTexts(doc, data);
   fillPhotos(doc, data, slug === 'demo');
