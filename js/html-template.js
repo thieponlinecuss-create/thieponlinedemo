@@ -74,18 +74,53 @@ function fillTexts(doc, data) {
   });
 }
 
-/** Ảnh mẫu của người khác không được hiện trên thiệp thật: thay bằng ảnh người dùng tải lên (hoặc ẩn đi). */
+/** Các địa chỉ có thể dùng để tải cùng một ảnh (Google Drive hay chặn một số kiểu link). */
+function imgCandidates(url) {
+  const out = [url];
+  const m = url.match(/[?&]id=([\w-]{20,})/) || url.match(/\/d\/([\w-]{20,})/) || url.match(/\/file\/d\/([\w-]{20,})/);
+  if (m && /google/.test(url)) {
+    out.push(`https://lh3.googleusercontent.com/d/${m[1]}=w1600`, `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1600`, `https://drive.google.com/uc?export=view&id=${m[1]}`);
+  }
+  return [...new Set(out)];
+}
+
+function setPhoto(img, url) {
+  const list = imgCandidates(url);
+  let k = 0;
+  img.setAttribute('loading', 'eager');
+  img.setAttribute('decoding', 'async');
+  img.setAttribute('style', 'left:0;top:0;width:100%;height:100%;object-fit:cover;background:none');
+  img.onerror = () => {
+    k += 1;
+    if (k < list.length) img.src = list[k];
+    else img.style.visibility = 'hidden'; // không tải được thì ẩn, tránh hiện biểu tượng ảnh lỗi
+  };
+  img.src = list[0];
+}
+
+/**
+ * Ảnh mẫu của người khác không được hiện trên thiệp thật: thay bằng ảnh người dùng tải lên.
+ * Mẫu có 25 ô ảnh: 0-11 ảnh bìa ghép, 12 chú rể, 13 cô dâu, 14-16 ảnh ngày cưới, 17-24 album.
+ * Ảnh ít hơn số ô thì dùng lại luân phiên.
+ */
 function fillPhotos(doc, data, keepSample) {
   if (keepSample) return;
-  const pool = [data.heroPhoto, data.groomPhoto, data.bridePhoto, ...(data.gallery || [])].map(safeImg).filter(Boolean);
-  // Ảnh chụp: nằm trong .iv-photo, hoặc là ảnh giữ chỗ tỉ lệ 2:3 (400x600, 350x525). Hoạ tiết hoa lá thì giữ nguyên.
+  const hero = safeImg(data.heroPhoto);
+  const groom = safeImg(data.groomPhoto);
+  const bride = safeImg(data.bridePhoto);
+  const gallery = (data.gallery || []).map(safeImg).filter(Boolean);
+  const mixed = [hero, ...gallery].filter(Boolean);
+  const any = mixed.length ? mixed : [groom, bride].filter(Boolean);
   const imgs = [...doc.querySelectorAll('img.cv-crop')].filter((img) => img.closest('.iv-photo') || /height="(600|525)"/.test(img.getAttribute('src') || ''));
-  imgs.forEach((img, i) => {
-    if (!pool.length) { img.style.visibility = 'hidden'; return; }
-    img.setAttribute('loading', 'eager');
-    img.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
-    img.setAttribute('src', pool[i % pool.length]);
-    img.setAttribute('style', 'left:0;top:0;width:100%;height:100%;object-fit:cover;background:none');
+  let n = 0;
+  imgs.forEach((img) => {
+    const slot = Number(img.closest('.iv-photo')?.dataset.slot);
+    let pick = '';
+    if (slot === 12) pick = groom || any[0];
+    else if (slot === 13) pick = bride || any[1 % (any.length || 1)];
+    else if (any.length) pick = any[n++ % any.length];
+    if (pick) setPhoto(img, pick);
+    else img.style.visibility = 'hidden';
   });
 }
 
