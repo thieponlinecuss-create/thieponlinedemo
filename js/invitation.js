@@ -26,8 +26,9 @@ const reveal = (inner) => `<div class="reveal">${inner}</div>`;
 export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], skipCover = false, rsvpDisabled = false }) {
   const L = tpl.layout;
   const d = fmtDateVi(data.date);
-  const hero = safeImg(data.heroPhoto);
-  const gallery = (data.gallery || []).map(safeImg).filter(Boolean);
+  // Giao diện thiệp không hiển thị ảnh chân dung, ảnh bìa hoặc album ảnh.
+  const hero = '';
+  const gallery = [];
   const map = safeUrl(data.mapUrl);
   const music = safeUrl(data.music);
   const target = `${data.date}T${data.partyTime || data.ceremonyTime || '09:00'}:00`;
@@ -69,10 +70,10 @@ export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], sk
       <h2 class="sec-title">Cô Dâu &amp; Chú Rể</h2>
       ${divider(L)}
       <div class="couple-grid">
-        <div class="person">${portrait(data.groomPhoto, data.groomName, L)}<h3>${esc(data.groomFull)}</h3><p class="role">Chú rể</p>
+        <div class="person"><h3>${esc(data.groomFull)}</h3><p class="role">Chú rể</p>
           <p class="parents"><small>Con của</small>${lines(data.groomParents)}</p></div>
         <div class="heart" aria-hidden="true">♥</div>
-        <div class="person">${portrait(data.bridePhoto, data.brideName, L)}<h3>${esc(data.brideFull)}</h3><p class="role">Cô dâu</p>
+        <div class="person"><h3>${esc(data.brideFull)}</h3><p class="role">Cô dâu</p>
           <p class="parents"><small>Con của</small>${lines(data.brideParents)}</p></div>
       </div>`)}</section>
 
@@ -112,11 +113,6 @@ export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], sk
     </footer>
   </div>
 </div>`;
-
-  if (hero) {
-    const h = root.querySelector('.hero');
-    h.style.backgroundImage = `linear-gradient(rgba(0,0,0,.28), rgba(0,0,0,.5)), url("${hero.replace(/"/g, '%22')}")`;
-  }
 
   const cleanups = [];
   const on = (el, ev, fn, opt) => { el.addEventListener(ev, fn, opt); cleanups.push(() => el.removeEventListener(ev, fn, opt)); };
