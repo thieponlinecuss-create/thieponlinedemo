@@ -17,7 +17,7 @@
   <script type="module">
     import { api, getToken } from './js/api.js';
     import { renderInvitation } from './js/invitation.js';
-    import { getTemplate, loadInvitationCss, mergeData, esc } from './js/lib.js';
+    import { getTemplateOrDefault, loadInvitationCss, mergeData, esc } from './js/lib.js';
 
     const q = new URLSearchParams(location.search);
     const slug = q.get('s') || '';
@@ -35,7 +35,7 @@
     try {
       if (!slug) throw Object.assign(new Error(''), { code: 'not_found' });
       const r = await api('getPublic', { slug, k, preview });
-      const tpl = getTemplate(r.template) || getTemplate('toi-gian-do');
+      const tpl = getTemplateOrDefault(r.template);
       const data = mergeData(r.data);
       document.title = `${data.groomName} & ${data.brideName} - Thiệp mời cưới | Duyên Thư`;
       await loadInvitationCss();

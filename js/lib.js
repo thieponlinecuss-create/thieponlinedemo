@@ -193,9 +193,9 @@ export const TEMPLATES = [
   {"id":"ngoc-luc-bao-lam-04","name":"Ngọc Lục Bảo - Lam","layout":"gold","style":"Sang trọng","color":"Lam","tags":["Sang trọng","Ngọc Lục Bảo"],"vars":{"bg":"#102b28","paper":"#1a403a","ink":"#f4e8c8","muted":"#8c7542","accent":"#d6b86a","accent2":"#8c7542","hero":"#091d1a","heroInk":"#fff8e8"}}
 ];
 // Chỉ giữ 8 mẫu hoàn chỉnh; các biến thể sinh tự động chưa có dữ liệu thiết kế riêng đã bị ẩn.
-TEMPLATES.splice(8);
+TEMPLATES.splice(0); // đã xoá toàn bộ mẫu cũ, chỉ giữ mẫu thiết kế sẵn bên dưới
 // Mẫu thiết kế sẵn dạng HTML (hiển thị bằng js/html-template.js)
-TEMPLATES.unshift({ id: 'anh-dao', name: 'Anh Đào', layout: 'html', html: 'thiep/anh-dao.html', thumbImg: 'assets/thiep-anh-dao.jpg',
+TEMPLATES.push({ id: 'anh-dao', name: 'Anh Đào', layout: 'html', html: 'thiep/anh-dao.html', thumbImg: 'assets/thiep-anh-dao.jpg',
   style: 'Hoa', color: 'Hồng', tags: ['Hoa', 'Anh Đào'], isNew: true,
   vars: { bg: '#fff', paper: '#fff', ink: '#4a4a4a', muted: '#999', accent: '#dcc4c3', accent2: '#f4d9e8', hero: '#dcc4c3', heroInk: '#fff' } });
 
@@ -203,6 +203,8 @@ TEMPLATES.unshift({ id: 'anh-dao', name: 'Anh Đào', layout: 'html', html: 'thi
 const DESIGN_FAMILIES = ['classic', 'editorial', 'arch', 'frame', 'botanical', 'ornate', 'modern', 'letterpress', 'terrace', 'monogram'];
 TEMPLATES.forEach((tpl, index) => { tpl.design = DESIGN_FAMILIES[index % DESIGN_FAMILIES.length]; });
 export const getTemplate = (id) => TEMPLATES.find((t) => t.id === id);
+/** Thiệp cũ dùng mẫu đã xoá sẽ hiển thị bằng mẫu hiện có. */
+export const getTemplateOrDefault = (id) => getTemplate(id) || TEMPLATES[0];
 
 export const varStyle = (vars) => Object.entries(vars).map(([k, v]) => `--${k}:${v}`).join(';');
 
