@@ -192,6 +192,9 @@ export const TEMPLATES = [
   {"id":"ngoc-luc-bao-hong-03","name":"Ngọc Lục Bảo - Hồng","layout":"gold","style":"Sang trọng","color":"Hồng","tags":["Sang trọng","Ngọc Lục Bảo"],"vars":{"bg":"#102b28","paper":"#1a403a","ink":"#f4e8c8","muted":"#8c7542","accent":"#d6b86a","accent2":"#8c7542","hero":"#091d1a","heroInk":"#fff8e8"}},
   {"id":"ngoc-luc-bao-lam-04","name":"Ngọc Lục Bảo - Lam","layout":"gold","style":"Sang trọng","color":"Lam","tags":["Sang trọng","Ngọc Lục Bảo"],"vars":{"bg":"#102b28","paper":"#1a403a","ink":"#f4e8c8","muted":"#8c7542","accent":"#d6b86a","accent2":"#8c7542","hero":"#091d1a","heroInk":"#fff8e8"}}
 ];
+// Ten layout families are assigned across the whole collection.
+const DESIGN_FAMILIES = ['classic', 'editorial', 'arch', 'frame', 'botanical', 'ornate', 'modern', 'letterpress', 'terrace', 'monogram'];
+TEMPLATES.forEach((tpl, index) => { tpl.design = DESIGN_FAMILIES[index % DESIGN_FAMILIES.length]; });
 export const getTemplate = (id) => TEMPLATES.find((t) => t.id === id);
 
 export const varStyle = (vars) => Object.entries(vars).map(([k, v]) => `--${k}:${v}`).join(';');
@@ -238,7 +241,7 @@ export const SAMPLE = {
 };
 
 export function thumb(tpl, { groom = 'Khang', bride = 'Hà', date = '20 · 12' } = {}) {
-  return `<div class="thumb l-${tpl.layout}" style="${varStyle(tpl.vars)}" aria-hidden="true">
+  return `<div class="thumb l-${tpl.layout} d-${tpl.design || 'classic'}" style="${varStyle(tpl.vars)}" aria-hidden="true">
   <div class="t-top">${tpl.layout === 'hy' ? '<div class="t-hy">囍</div>' : ''}<span class="t-kick">Thiệp mời cưới</span>
     <div class="t-names"><span>${esc(groom)}</span><i>&amp;</i><span>${esc(bride)}</span></div></div>
   <div class="t-bot"><span class="t-sub">Save the date</span><span class="t-line"></span><span class="t-date">${date}</span></div>
