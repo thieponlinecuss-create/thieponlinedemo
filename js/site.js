@@ -155,12 +155,12 @@ function pageTemplates({ query }) {
       ? `<div class="empty"><p>Không có mẫu phù hợp bộ lọc này.</p><a href="${href('/mau-thiep')}" class="btn btn-ghost">Xoá bộ lọc</a></div>`
       : `<div class="grid-4">${list.map((t) => `<article class="tpl-card tpl-card-showcase">
           <div class="tpl-preview">
-            <a class="tpl-preview-link" href="${href(`/mau-thiep/${t.id}/demo`)}" aria-label="Xem demo ${esc(t.name)}">${thumb(t)}</a>
+            <a class="tpl-preview-link js-demo-link" href="${href(`/mau-thiep/${t.id}/demo`)}" data-demo-route="/mau-thiep/${t.id}/demo" aria-label="Xem demo ${esc(t.name)}">${thumb(t)}</a>
             ${t.isNew ? '<span class="tpl-new-badge">Mới</span>' : ''}
             <div class="tpl-preview-overlay">
               <div class="tpl-preview-title">${esc(t.name)}</div>
               <div class="tpl-preview-actions">
-                <a href="${href(`/mau-thiep/${t.id}/demo`)}" class="btn btn-demo"><span aria-hidden="true">◉</span> Xem demo</a>
+                <a href="${href(`/mau-thiep/${t.id}/demo`)}" data-demo-route="/mau-thiep/${t.id}/demo" class="btn btn-demo js-demo-link"><span aria-hidden="true">◉</span> Xem demo</a>
                 <a href="${href(`/tao-thiep?mau=${t.id}`)}" class="btn btn-create"><span aria-hidden="true">＋</span> Tạo ngay</a>
               </div>
             </div>
@@ -169,6 +169,15 @@ function pageTemplates({ query }) {
         </article>`).join('')}</div>`}
     <div class="card center" style="margin:56px auto 0;max-width:640px"><h3>Chưa thấy mẫu ưng ý?</h3><p class="muted">Hãy cho chúng mình biết bạn đang tìm phong cách nào, chúng mình sẽ thiết kế thêm mẫu mới.</p></div>
   </div>`;
+  // Điều hướng demo trực tiếp để tránh trường hợp trình duyệt không kích hoạt hash route từ lớp phủ.
+  $app.querySelectorAll('[data-demo-route]').forEach((a) => {
+    a.addEventListener('click', (event) => {
+      event.preventDefault();
+      const next = a.dataset.demoRoute;
+      if (location.hash === `#${next}`) router();
+      else location.hash = next;
+    });
+  });
 }
 
 /* ================= demo mẫu ================= */
