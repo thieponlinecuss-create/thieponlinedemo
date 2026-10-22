@@ -108,7 +108,7 @@ export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], sk
     <footer class="inv-footer">
       <p class="thanks">Xin chân thành cảm ơn!</p>
       <p class="names small">${esc(data.groomName)} &amp; ${esc(data.brideName)}</p>
-      <a href="./index.html" class="made">Tạo thiệp cưới online tại Duyên Lành</a>
+      <a href="./index.html" class="made">Tạo thiệp cưới online tại Duyên Thư</a>
     </footer>
   </div>
 </div>`;

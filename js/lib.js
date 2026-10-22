@@ -38,17 +38,13 @@ export const lastWord = (s) => String(s || '').split(' ').slice(-1)[0];
 
 export function isActive(inv) {
   const now = Date.now();
-  return (inv.paid_until || 0) > now || inv.trial_ends_at > now;
+  return (inv.paid_until || 0) > now; // không có dùng thử: chỉ thiệp đã thanh toán mới mở
 }
 export const isPaid = (inv) => (inv.paid_until || 0) > Date.now();
 
 export function statusBadge(inv) {
   if (isPaid(inv)) return '<span class="badge badge-ok">Đã kích hoạt</span>';
-  if (isActive(inv)) {
-    const d = Math.max(1, Math.ceil((inv.trial_ends_at - Date.now()) / DAY));
-    return `<span class="badge badge-trial">Dùng thử · còn ${d} ngày</span>`;
-  }
-  return '<span class="badge badge-off">Hết hạn</span>';
+  return '<span class="badge badge-pending">Chờ thanh toán</span>';
 }
 
 /* Đường dẫn công khai của thiệp (t.html nằm cùng thư mục với index.html) */

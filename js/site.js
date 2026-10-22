@@ -68,6 +68,7 @@ function renderChrome() {
     <div><b class="brand"><span class="brand-mark">♥</span> ${esc(SITE_NAME)}</b><p>Thiệp mời cưới online: đẹp, dễ làm, gửi riêng từng khách mời.</p></div>
     <div><b>Khám phá</b><a href="${href('/mau-thiep')}">Mẫu thiệp</a><a href="${href('/bang-gia')}">Bảng giá</a><a href="${href('/tao-thiep')}">Tạo thiệp</a></div>
     <div><b>Tài khoản</b><a href="${href('/dang-nhap')}">Đăng nhập</a><a href="${href('/dang-ky')}">Đăng ký</a><a href="${href('/quan-ly')}">Thiệp của tôi</a></div>
+    <div><b>Liên hệ</b><a href="tel:${CONFIG.PHONE}">Hotline: ${esc(CONFIG.PHONE)}</a><a href="https://zalo.me/${CONFIG.ZALO}" target="_blank" rel="noopener">Zalo: ${esc(CONFIG.ZALO)}</a><a href="mailto:${CONFIG.EMAIL}">${esc(CONFIG.EMAIL)}</a></div>
   </div><p class="copy">© ${new Date().getFullYear()} ${esc(SITE_NAME)}. Mọi quyền được bảo lưu.</p></footer>`;
 }
 
@@ -82,7 +83,7 @@ const FEATURES = [
 ];
 const FAQ = [
   ['Tôi cần bao lâu để làm xong thiệp?', 'Thường khoảng 10 phút: nhập tên, ngày giờ, địa điểm, tải vài tấm ảnh là có thể gửi link ngay.'],
-  ['Dùng thử có mất phí không?', `Không. Bạn tạo thiệp và dùng thử ${TRIAL_DAYS} ngày đầy đủ tính năng. Chỉ khi hài lòng bạn mới thanh toán ${fmtVnd(PRICE)}.`],
+  ['Tôi có được dùng thử không?', `Bạn xem demo miễn phí tất cả mẫu. Khi chọn mẫu, bạn quét mã QR thanh toán ${fmtVnd(PRICE)}/thiệp để bắt đầu tạo thiệp.`],
   ['Có đổi mẫu thiệp được không?', 'Được. Nội dung đã nhập (tên, ngày, địa điểm, ảnh) được giữ nguyên khi bạn đổi sang mẫu khác.'],
   ['Khách mở thiệp có cần cài ứng dụng không?', 'Không. Thiệp là một trang web, mở được trên mọi điện thoại và trình duyệt.'],
 ];
@@ -97,10 +98,10 @@ function pageHome() {
       <h1>Thiệp mời cưới <em>đẹp</em>, gửi riêng cho từng khách mời</h1>
       <p class="lead">${esc(SITE_NAME)} giúp bạn tạo thiệp cưới online trong 10 phút: chọn mẫu, nhập thông tin, chia sẻ link. Khách xác nhận tham dự và gửi lời chúc ngay trên thiệp.</p>
       <div class="hero-actions">
-        <a href="${href('/tao-thiep')}" class="btn btn-primary btn-lg">Tạo thiệp miễn phí</a>
-        <a href="${href('/mau-thiep')}" class="btn btn-ghost btn-lg">Xem mẫu thiệp</a>
+        <a href="${href('/tao-thiep')}" class="btn btn-primary btn-lg">Chọn mẫu thiệp</a>
+        <a href="${href('/mau-thiep')}" class="btn btn-ghost btn-lg">Xem demo mẫu</a>
       </div>
-      <p class="hero-note">Dùng thử ${TRIAL_DAYS} ngày · Hài lòng mới thanh toán ${fmtVnd(PRICE)}</p>
+      <p class="hero-note">Xem demo miễn phí · Chỉ ${fmtVnd(PRICE)}/thiệp</p>
     </div>
     <div class="hero-thumbs">${featured.map((t) => thumb(t)).join('')}</div>
   </div></section>
@@ -145,7 +146,7 @@ function pageTemplates({ query }) {
   };
   const list = TEMPLATES.filter((t) => (!kieu || t.style === kieu) && (!mau || t.color === mau));
   $app.innerHTML = `<div class="wrap">
-    <div class="page-head"><h1>Mẫu thiệp mời đám cưới</h1><p>Tạo miễn phí · Dùng thử ${TRIAL_DAYS} ngày · Bạn có thể đổi mẫu bất cứ lúc nào khi chỉnh sửa.</p></div>
+    <div class="page-head"><h1>Mẫu thiệp mời đám cưới</h1><p>Xem demo miễn phí · Chọn mẫu và thanh toán ${fmtVnd(PRICE)}/thiệp qua mã QR.</p></div>
     <div class="filters">
       <div class="chips"><b>Phong cách</b><a class="chip ${!kieu ? 'on' : ''}" href="${link('', mau)}">Tất cả</a>${STYLES.map((s) => `<a class="chip ${kieu === s ? 'on' : ''}" href="${link(s, mau)}">${esc(s)}</a>`).join('')}</div>
       <div class="chips"><b>Màu</b><a class="chip ${!mau ? 'on' : ''}" href="${link(kieu, '')}">Tất cả</a>${COLORS.map((c) => `<a class="chip ${mau === c ? 'on' : ''}" href="${link(kieu, c)}">${esc(c)}</a>`).join('')}</div>
@@ -156,7 +157,7 @@ function pageTemplates({ query }) {
           <a href="${href(`/mau-thiep/${t.id}/demo`)}" aria-label="Xem demo ${esc(t.name)}">${thumb(t)}</a>
           <h3>${esc(t.name)}</h3>
           <div class="tpl-meta">${t.isNew ? '<span class="tag tag-new">Mới</span>' : ''}${t.tags.map((x) => `<span class="tag">${esc(x)}</span>`).join('')}</div>
-          <div class="tpl-actions"><a href="${href(`/mau-thiep/${t.id}/demo`)}" class="btn btn-ghost">Xem demo</a><a href="${href(`/tao-thiep?mau=${t.id}`)}" class="btn btn-primary">Tạo thiệp</a></div>
+          <div class="tpl-actions"><a href="${href(`/mau-thiep/${t.id}/demo`)}" class="btn btn-ghost">Xem demo</a><a href="${href(`/tao-thiep?mau=${t.id}`)}" class="btn btn-primary">Chọn mẫu · ${fmtVnd(PRICE)}</a></div>
         </div>`).join('')}</div>`}
     <div class="card center" style="margin:56px auto 0;max-width:640px"><h3>Chưa thấy mẫu ưng ý?</h3><p class="muted">Hãy cho chúng mình biết bạn đang tìm phong cách nào, chúng mình sẽ thiết kế thêm mẫu mới.</p></div>
   </div>`;
@@ -171,7 +172,7 @@ async function pageDemo({ params }, rid) {
   await loadInvitationCss();
   if (rid !== routeId) return unloadInvitationCss();
   $app.innerHTML = `<div class="demo-bar"><a href="${href('/mau-thiep')}">← Tất cả mẫu</a><span>${esc(tpl.name)}</span>
-    <a href="${href(`/tao-thiep?mau=${tpl.id}`)}" class="btn btn-primary btn-sm">Dùng mẫu này</a></div><div class="demo-spacer"></div><div id="demo-root"></div>`;
+    <a href="${href(`/tao-thiep?mau=${tpl.id}`)}" class="btn btn-primary btn-sm">Chọn mẫu này · ${fmtVnd(PRICE)}</a></div><div class="demo-spacer"></div><div id="demo-root"></div>`;
   const off = renderInvitation(document.getElementById('demo-root'), {
     tpl, data: SAMPLE, slug: 'demo',
     guest: { name: 'Anh Chị Khách Quý', token: '' },
@@ -189,13 +190,13 @@ function pagePricing() {
   setTitle('Bảng giá thiệp cưới online');
   $app.innerHTML = `<div class="wrap section">
     <div class="center" style="margin-bottom:36px"><p class="eyebrow">Bảng giá</p><h1>Một mức giá, đầy đủ tính năng</h1>
-      <p class="muted">Tạo thiệp miễn phí, dùng thử ${TRIAL_DAYS} ngày. Chỉ thanh toán khi bạn hài lòng.</p></div>
+      <p class="muted">Xem demo miễn phí. Chọn mẫu và thanh toán một lần qua mã QR.</p></div>
     <div class="price-card"><p class="eyebrow">Mỗi thiệp</p><div class="amount">${fmtVnd(PRICE)}</div><p class="muted">dùng trong ${PAID_DAYS} ngày</p>
       <ul><li>Tất cả mẫu thiệp, đổi mẫu không giới hạn</li><li>Link riêng cho từng khách mời</li><li>RSVP, thống kê và lời chúc</li><li>Album ảnh, bản đồ, đếm ngược, nhạc nền</li><li>Hộp mừng cưới và sao chép số tài khoản</li></ul>
-      <a href="${href('/tao-thiep')}" class="btn btn-primary btn-lg" style="width:100%">Tạo thiệp miễn phí</a></div>
+      <a href="${href('/tao-thiep')}" class="btn btn-primary btn-lg" style="width:100%">Chọn mẫu thiệp</a></div>
     <div class="faq" style="margin-top:56px">
       <details><summary>Thanh toán như thế nào?</summary><p>Bạn chuyển khoản qua mã VietQR hiển thị trong trang quản lý thiệp. Sau khi nhận được tiền, thiệp được kích hoạt thời hạn sử dụng đầy đủ.</p></details>
-      <details><summary>Hết thời gian dùng thử thì sao?</summary><p>Thiệp tạm ẩn với khách mời cho đến khi bạn thanh toán. Toàn bộ nội dung bạn đã nhập vẫn được giữ nguyên.</p></details>
+      <details><summary>Tôi có xem trước được không?</summary><p>Có. Tất cả mẫu đều có trang demo miễn phí. Sau khi thanh toán, thiệp của bạn được mở cho khách mời xem.</p></details>
     </div></div>`;
 }
 
@@ -207,7 +208,7 @@ function pageAuth(mode) {
     const next = safeNext(query.get('next') || '');
     $app.innerHTML = `<div class="auth"><form class="card" id="auth-form">
       <h1 style="font-size:2.2rem">${isLogin ? 'Đăng nhập' : 'Tạo tài khoản'}</h1>
-      <p class="muted">${isLogin ? 'Chào mừng bạn quay lại.' : `Đăng ký miễn phí để tạo thiệp cưới và dùng thử ${TRIAL_DAYS} ngày.`}</p>
+      <p class="muted">${isLogin ? 'Chào mừng bạn quay lại.' : 'Đăng ký tài khoản để chọn mẫu và tạo thiệp cưới.'}</p>
       <div id="auth-err"></div>
       ${isLogin ? '' : '<label class="field">Họ tên<input name="name" required maxlength="80" autocomplete="name"></label>'}
       <label class="field">Email<input name="email" type="email" required maxlength="120" autocomplete="email"></label>
@@ -258,7 +259,7 @@ function pageCreate(ctx) {
   const mau = ctx.query.get('mau');
   let sel = mau && getTemplate(mau) ? mau : TEMPLATES[0].id;
   $app.innerHTML = `<div class="wrap section" style="max-width:980px">
-    <div class="center" style="margin-bottom:30px"><h1>Tạo thiệp cưới</h1><p class="muted">Hoàn tất hai bước đơn giản, phần còn lại chỉnh sửa trong trang quản lý.</p></div>
+    <div class="center" style="margin-bottom:30px"><h1>Tạo thiệp cưới</h1><p class="muted">Nhập tên, chọn mẫu rồi quét mã QR thanh toán. Phần còn lại chỉnh sửa trong trang quản lý.</p></div>
     <form id="create-form"><div id="create-err"></div>
       <div class="card" style="margin-bottom:24px"><h3>1. Tên cô dâu &amp; chú rể</h3>
         <div class="row2">
@@ -268,8 +269,8 @@ function pageCreate(ctx) {
         <p class="muted" style="margin:0;font-size:.88rem">Bạn có thể bổ sung ngày cưới, địa điểm, ảnh... ở bước chỉnh sửa tiếp theo.</p></div>
       <h3>2. Chọn mẫu thiệp</h3>
       <div class="picker" id="picker"></div>
-      <button class="btn btn-primary btn-lg">Tạo thiệp miễn phí</button>
-      <p class="muted" style="font-size:.88rem;margin-top:12px">Dùng thử ${TRIAL_DAYS} ngày đầy đủ tính năng. Bạn có thể đổi mẫu bất cứ lúc nào.</p>
+      <button class="btn btn-primary btn-lg">Tiếp tục thanh toán ${fmtVnd(PRICE)}</button>
+      <p class="muted" style="font-size:.88rem;margin-top:12px">Bạn sẽ nhận mã QR chuyển khoản ${fmtVnd(PRICE)}. Thiệp được kích hoạt sau khi chúng mình xác nhận thanh toán.</p>
     </form></div>`;
   const form = document.getElementById('create-form');
   const picker = document.getElementById('picker');
@@ -293,11 +294,12 @@ function pageCreate(ctx) {
     btn.textContent = 'Đang tạo...';
     try {
       const r = await api('createInvitation', { template: sel, groom, bride, data: defaultData(groom, bride) });
-      nav(`/quan-ly/${r.id}`);
+      try { await api('createPayment', { id: r.id }); } catch { /* tạo lại được ở tab Thanh toán */ }
+      nav(`/quan-ly/${r.id}?tab=thanh-toan`);
     } catch (x) {
       errBox.innerHTML = alertBox('alert-err', x.message);
       btn.disabled = false;
-      btn.textContent = 'Tạo thiệp miễn phí';
+      btn.textContent = 'Tiếp tục thanh toán';
     }
   });
 }
@@ -599,7 +601,7 @@ function mountPayment($tab, inv, payments, reload) {
   $tab.innerHTML = `<div style="display:grid;gap:22px">
     ${paid ? `<div class="alert alert-ok" style="margin:0">Thiệp đã được kích hoạt đến ${new Date(inv.paid_until).toLocaleDateString('vi-VN')}. Cảm ơn bạn!</div>` : ''}
     ${!pending ? `<div class="card"><h3>${paid ? 'Gia hạn thiệp' : 'Kích hoạt thiệp'}</h3>
-      <p class="muted">Phí ${fmtVnd(PRICE)} cho ${PAID_DAYS} ngày sử dụng, đầy đủ tính năng. Bạn chỉ cần thanh toán khi đã hài lòng với thiệp.</p>
+      <p class="muted">Phí ${fmtVnd(PRICE)} cho ${PAID_DAYS} ngày sử dụng, đầy đủ tính năng. Chọn mẫu thiệp ưng ý rồi quét mã QR để kích hoạt.</p>
       <div id="pay-err"></div><button class="btn btn-primary" id="pay-btn">Thanh toán ${fmtVnd(PRICE)}</button></div>` : ''}
     ${pending ? `<div class="card"><h3>Chuyển khoản ${fmtVnd(pending.amount)}</h3><div class="pay-grid">
       <div>${configured
@@ -607,7 +609,7 @@ function mountPayment($tab, inv, payments, reload) {
         : alertBox('alert-info', 'Quản trị viên chưa cấu hình tài khoản nhận tiền (BANK_ID, BANK_ACCOUNT trong js/config.js).')}</div>
       <div><dl class="kv"><dt>Ngân hàng</dt><dd>${esc(bank.toUpperCase())}</dd><dt>Số tài khoản</dt><dd>${esc(acc)}</dd><dt>Chủ tài khoản</dt><dd>${esc(holder)}</dd>
         <dt>Số tiền</dt><dd>${fmtVnd(pending.amount)}</dd><dt>Nội dung CK</dt><dd>${esc(pending.code)}</dd></dl>
-        <div class="alert alert-info" style="margin-top:18px">Vui lòng giữ nguyên nội dung chuyển khoản. Thiệp sẽ được kích hoạt sau khi chúng mình xác nhận đã nhận tiền (thường trong vài giờ).</div></div>
+        <div class="alert alert-info" style="margin-top:18px">Vui lòng giữ nguyên nội dung chuyển khoản. Thiệp sẽ được kích hoạt sau khi chúng mình xác nhận đã nhận tiền (thường trong vài giờ). Cần hỗ trợ nhanh: Zalo ${esc(CONFIG.ZALO)}.</div></div>
     </div></div>` : ''}
     ${payments.length ? `<div class="table-wrap"><table class="table"><thead><tr><th>Mã</th><th>Số tiền</th><th>Trạng thái</th><th>Thời gian</th></tr></thead><tbody>
       ${payments.map((p) => `<tr><td>${esc(p.code)}</td><td>${fmtVnd(p.amount)}</td><td>${

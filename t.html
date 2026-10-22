@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#c2284d">
-  <title>Thiệp mời cưới</title>
+  <meta name="theme-color" content="#3b1f2b">
+  <link rel="icon" href="assets/favicon.png">
+  <title>Thiệp mời cưới | Duyên Thư</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Dancing+Script:wght@500;600;700&family=Noto+Serif+SC:wght@600&display=swap">
@@ -36,7 +37,7 @@
       const r = await api('getPublic', { slug, k, preview });
       const tpl = getTemplate(r.template) || getTemplate('toi-gian-do');
       const data = mergeData(r.data);
-      document.title = `${data.groomName} & ${data.brideName} - Thiệp mời cưới`;
+      document.title = `${data.groomName} & ${data.brideName} - Thiệp mời cưới | Duyên Thư`;
       await loadInvitationCss();
       renderInvitation(root, {
         tpl, data, slug,
@@ -46,7 +47,7 @@
       });
     } catch (e) {
       if (e.code === 'not_found') message('Không tìm thấy thiệp', 'Đường dẫn bạn mở không tồn tại hoặc thiệp đã bị xoá.');
-      else if (e.code === 'inactive') message('Thiệp tạm thời chưa mở', 'Thiệp mời này đã hết thời gian hiển thị. Vui lòng liên hệ cô dâu chú rể để được hỗ trợ.');
+      else if (e.code === 'inactive') message('Thiệp tạm thời chưa mở', 'Thiệp mời này chưa được kích hoạt. Vui lòng liên hệ cô dâu chú rể để được hỗ trợ.');
       else message('Không tải được thiệp', e.message || 'Vui lòng thử lại sau.');
     }
   </script>

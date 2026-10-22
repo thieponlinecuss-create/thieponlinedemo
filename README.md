@@ -1,4 +1,4 @@
-# Duyên Lành - Thiệp cưới online (bản web tĩnh cho GitHub Pages)
+# Duyên Thư - Thiệp cưới online (bản web tĩnh cho GitHub Pages)
 
 Bản này chuyển từ Next.js + SQLite sang **web tĩnh** (HTML/CSS/JS thuần, không cần build) để up lên GitHub Pages.
 GitHub Pages không chạy được server, nên phần dữ liệu được chuyển sang **Google Apps Script + Google Sheets + Google Drive** (miễn phí).
@@ -20,14 +20,14 @@ apps-script/Code.gs   Backend (dán vào Google Apps Script, KHÔNG up lên GitH
 ## Cài đặt (làm 1 lần, khoảng 10 phút)
 
 ### Bước 1. Tạo Google Sheet làm database
-1. Vào https://sheets.google.com, tạo một bảng tính trống, đặt tên `DuyenLanh-DB`.
+1. Vào https://sheets.google.com, tạo một bảng tính trống, đặt tên `DuyenThu-DB`.
 2. **Không chia sẻ** bảng tính này cho ai (trong đó có thông tin người dùng).
 
 ### Bước 2. Dán backend vào Apps Script
 1. Trong Sheet: menu **Tiện ích mở rộng → Apps Script**.
 2. Xoá nội dung mặc định, dán toàn bộ nội dung file `apps-script/Code.gs`.
 3. Sửa dòng đầu: `const ADMIN_EMAIL = 'you@example.com';` thành email của bạn (email này sẽ có quyền vào trang Admin). Nếu đổi giá thì sửa `PRICE` cho khớp `js/config.js`.
-4. Chọn hàm **`setup`** ở thanh trên, bấm **Chạy**, rồi cấp quyền khi Google hỏi (cần quyền Sheets và Drive để lưu ảnh). Hàm này tạo sẵn các sheet và thư mục `DuyenLanh-Uploads` trong Drive.
+4. Chọn hàm **`setup`** ở thanh trên, bấm **Chạy**, rồi cấp quyền khi Google hỏi (cần quyền Sheets và Drive để lưu ảnh). Hàm này tạo sẵn các sheet và thư mục `DuyenThu-Uploads` trong Drive.
 
 ### Bước 3. Triển khai Web App và lấy URL
 1. Bấm **Triển khai → Tùy chọn triển khai mới → loại "Ứng dụng web"**.
@@ -56,7 +56,7 @@ apps-script/Code.gs   Backend (dán vào Google Apps Script, KHÔNG up lên GitH
 - **Tốc độ**: mỗi thao tác gọi Apps Script mất khoảng 1-2 giây (lần đầu sau thời gian dài không dùng có thể chậm hơn). Thiệp đã mở sẽ chạy mượt.
 - **Mật khẩu**: bản cũ dùng bcrypt; Apps Script không có bcrypt nên dùng SHA-256 lặp 1000 lần kèm salt riêng cho từng tài khoản. Vẫn không lưu mật khẩu gốc, nhưng yếu hơn bcrypt, nên đừng dùng chung mật khẩu với dịch vụ khác cho tài khoản Admin.
 - **Giới hạn thử sai**: Apps Script không thấy địa chỉ IP, nên giới hạn đăng nhập sai tính theo từng email, giới hạn RSVP tính theo từng thiệp (và từng tên người gửi).
-- **Ảnh** lưu ở Google Drive (thư mục `DuyenLanh-Uploads`, chia sẻ dạng "ai có link"), tự thu nhỏ còn tối đa 1600px trước khi tải lên, tối đa 6MB/ảnh.
+- **Ảnh** lưu ở Google Drive (thư mục `DuyenThu-Uploads`, chia sẻ dạng "ai có link"), tự thu nhỏ còn tối đa 1600px trước khi tải lên, tối đa 6MB/ảnh.
 - **Chia sẻ link trên Zalo/Facebook** sẽ không hiện ảnh xem trước riêng cho từng thiệp (web tĩnh không tạo được thẻ OpenGraph theo từng thiệp).
 - **Hạn mức Google**: tài khoản Gmail thường chạy tốt cho vài trăm thiệp. Nếu lượng khách rất lớn, nên chuyển sang backend riêng.
 - Thêm một thay đổi nhỏ: nút **Xoá thiệp** có hộp xác nhận trước khi xoá.
