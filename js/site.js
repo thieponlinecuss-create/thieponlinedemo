@@ -45,7 +45,7 @@ function renderChrome() {
   const u = state.user;
   $header.innerHTML = `<header class="site-header"><div class="wrap nav">
     <a href="./index.html" class="brand"><img src="assets/logo-header.png" alt="${esc(SITE_NAME)}" style="height:40px;width:auto"></a>
-    <nav class="nav-links" aria-label="Chính">
+    <nav class="nav-links" id="desktop-nav" aria-label="Chính">
       <a href="${href('/mau-thiep')}">Mẫu thiệp</a>
       <a href="${href('/bang-gia')}">Bảng giá</a>
       ${u ? `<a href="${href('/quan-ly')}">Thiệp của tôi</a>` : ''}
@@ -53,8 +53,34 @@ function renderChrome() {
     </nav>
     <div class="nav-cta">${u
       ? '<button class="btn btn-ghost" type="button" id="logout">Đăng xuất</button>'
-      : `<a href="${href('/dang-nhap')}" class="btn btn-ghost">Đăng nhập</a><a href="${href('/tao-thiep')}" class="btn btn-primary">Tạo thiệp</a>`}</div>
+      : `<a href="${href('/dang-nhap')}" class="btn btn-ghost nav-login">Đăng nhập</a><a href="${href('/tao-thiep')}" class="btn btn-primary nav-create">Tạo thiệp</a>`}
+      <button class="nav-menu-toggle" type="button" id="mobile-menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Mở menu"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Menu điện thoại" hidden>
+      <a href="${href('/mau-thiep')}">Mẫu thiệp</a>
+      <a href="${href('/bang-gia')}">Bảng giá</a>
+      ${u ? `<a href="${href('/quan-ly')}">Thiệp của tôi</a>` : ''}
+      ${u && u.isAdmin ? `<a href="${href('/admin')}">Quản trị</a>` : ''}
+      ${u ? '' : `<a href="${href('/dang-nhap')}">Đăng nhập</a><a class="mobile-nav-primary" href="${href('/tao-thiep')}">Tạo thiệp ngay</a>`}
+    </nav>
   </div></header>`;
+  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (menuToggle && mobileNav) {
+    menuToggle.addEventListener('click', () => {
+      const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
+      mobileNav.hidden = !open;
+      menuToggle.classList.toggle('is-open', open);
+    });
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobileNav.hidden = true;
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Mở menu');
+      menuToggle.classList.remove('is-open');
+    }));
+  }
   const lo = document.getElementById('logout');
   if (lo) lo.addEventListener('click', async () => {
     try { await api('logout'); } catch { /* bỏ qua */ }
