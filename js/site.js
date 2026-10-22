@@ -505,6 +505,10 @@ function mountEditor($tab, inv) {
         </div>
       </div>
 
+      <div class="fieldset"><h3>Ảnh cô dâu &amp; chú rể</h3>
+        <p class="muted" style="font-size:.88rem">Tùy chọn. Ảnh sẽ xuất hiện trên thiệp sau khi bạn lưu thay đổi.</p>
+        <div class="row2"><label class="field" id="groom-photo-field"></label><label class="field" id="bride-photo-field"></label></div>
+      </div>
       <div class="fieldset"><h3>Thời gian &amp; địa điểm</h3>
         <div class="row2">
           <label class="field">Ngày cưới<input type="date" name="date" value="${g('date')}" required></label>
@@ -536,6 +540,8 @@ function mountEditor($tab, inv) {
 
   const form = document.getElementById('editor-form');
   const frame = document.getElementById('preview');
+  mountImageField(document.getElementById('groom-photo-field'), 'Ảnh chú rể', 'groomPhoto', data.groomPhoto || '');
+  mountImageField(document.getElementById('bride-photo-field'), 'Ảnh cô dâu', 'bridePhoto', data.bridePhoto || '');
   let rev = 0;
   const loadPreview = () => { frame.src = `${inviteUrl(inv.slug)}&preview=1&r=${++rev}`; };
   loadPreview();
@@ -555,7 +561,7 @@ function mountEditor($tab, inv) {
         groomParents: v('groomParents'), brideParents: v('brideParents'),
         date: v('date'), lunarDate: v('lunarDate'), ceremonyTime: v('ceremonyTime'), partyTime: v('partyTime'),
         venue: v('venue'), address: v('address'), mapUrl: v('mapUrl'),
-        heroPhoto: '', groomPhoto: '', bridePhoto: '', gallery: [],
+        heroPhoto: '', groomPhoto: form.elements.groomPhoto.value, bridePhoto: form.elements.bridePhoto.value, gallery: Array.isArray(data.gallery) ? data.gallery : [],
         quote: v('quote'), story: v('story'),
         giftGroom: gift('giftGroom'), giftBride: gift('giftBride'), music: v('music'),
       },
