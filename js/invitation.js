@@ -26,9 +26,8 @@ const reveal = (inner) => `<div class="reveal">${inner}</div>`;
 export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], skipCover = false, rsvpDisabled = false }) {
   const L = tpl.layout;
   const d = fmtDateVi(data.date);
-  // Giao diện thiệp không hiển thị ảnh chân dung, ảnh bìa hoặc album ảnh.
-  const hero = '';
-  const gallery = [];
+  // Chỉ hiển thị album và ảnh chân dung khi chủ thiệp chủ động tải lên.
+  const gallery = Array.isArray(data.gallery) ? data.gallery.filter(Boolean) : [];
   const map = safeUrl(data.mapUrl);
   const music = safeUrl(data.music);
   const target = `${data.date}T${data.partyTime || data.ceremonyTime || '09:00'}:00`;
@@ -70,10 +69,10 @@ export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], sk
       <h2 class="sec-title">Cô Dâu &amp; Chú Rể</h2>
       ${divider(L)}
       <div class="couple-grid">
-        <div class="person"><h3>${esc(data.groomFull)}</h3><p class="role">Chú rể</p>
+        <div class="person">${data.groomPhoto ? `<img class="couple-photo" src="${esc(safeImg(data.groomPhoto))}" alt="Ảnh chú rể" loading="lazy">` : ""}<h3>${esc(data.groomFull)}</h3><p class="role">Chú rể</p>
           <p class="parents"><small>Con của</small>${lines(data.groomParents)}</p></div>
         <div class="heart" aria-hidden="true">♥</div>
-        <div class="person"><h3>${esc(data.brideFull)}</h3><p class="role">Cô dâu</p>
+        <div class="person">${data.bridePhoto ? `<img class="couple-photo" src="${esc(safeImg(data.bridePhoto))}" alt="Ảnh cô dâu" loading="lazy">` : ""}<h3>${esc(data.brideFull)}</h3><p class="role">Cô dâu</p>
           <p class="parents"><small>Con của</small>${lines(data.brideParents)}</p></div>
       </div>`)}</section>
 
