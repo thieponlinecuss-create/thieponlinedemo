@@ -192,6 +192,9 @@ export const TEMPLATES = [
   {"id":"ngoc-luc-bao-hong-03","name":"Ngọc Lục Bảo - Hồng","layout":"gold","style":"Sang trọng","color":"Hồng","tags":["Sang trọng","Ngọc Lục Bảo"],"vars":{"bg":"#102b28","paper":"#1a403a","ink":"#f4e8c8","muted":"#8c7542","accent":"#d6b86a","accent2":"#8c7542","hero":"#091d1a","heroInk":"#fff8e8"}},
   {"id":"ngoc-luc-bao-lam-04","name":"Ngọc Lục Bảo - Lam","layout":"gold","style":"Sang trọng","color":"Lam","tags":["Sang trọng","Ngọc Lục Bảo"],"vars":{"bg":"#102b28","paper":"#1a403a","ink":"#f4e8c8","muted":"#8c7542","accent":"#d6b86a","accent2":"#8c7542","hero":"#091d1a","heroInk":"#fff8e8"}}
 ];
+// Chỉ giữ 8 mẫu hoàn chỉnh; các biến thể sinh tự động chưa có dữ liệu thiết kế riêng đã bị ẩn.
+TEMPLATES.splice(8);
+
 // Ten layout families are assigned across the whole collection.
 const DESIGN_FAMILIES = ['classic', 'editorial', 'arch', 'frame', 'botanical', 'ornate', 'modern', 'letterpress', 'terrace', 'monogram'];
 TEMPLATES.forEach((tpl, index) => { tpl.design = DESIGN_FAMILIES[index % DESIGN_FAMILIES.length]; });
