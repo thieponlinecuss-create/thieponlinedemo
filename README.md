@@ -69,3 +69,7 @@ Thêm một phần tử vào mảng `TEMPLATES` trong `js/lib.js` (bộ màu `va
 - `index.html`: trang chủ giới thiệu (giao diện kiểu Dentv, đã đổi thương hiệu Duyên Thư). Các nút Mẫu thiệp / Tạo thiệp / Bảng giá dẫn sang `app.html`.
 - `app.html`: ứng dụng thật (xem demo, đăng ký, chọn mẫu, QR thanh toán, quản lý thiệp, admin).
 - Lưu ý: CSS và ảnh của `index.html` đang tải từ server Dentv (`dentv-thiepcuoi.tranden.net`), nên server đó phải còn hoạt động.
+
+## Mẫu Anh Đào (thiết kế sẵn dạng HTML)
+- File mẫu: `thiep/anh-dao.html`, khai báo trong `TEMPLATES` (`js/lib.js`, id `anh-dao`), hiển thị bởi `js/html-template.js`.
+- **Bắt buộc:** thêm `'anh-dao'` vào mảng `TEMPLATE_IDS` ở đầu `apps-script/Code.gs` rồi triển khai phiên bản mới, nếu không backend sẽ từ chối tạo thiệp bằng mẫu này.

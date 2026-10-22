@@ -1,4 +1,5 @@
 import { api } from './api.js';
+import { renderHtmlTemplate } from './html-template.js';
 import { divider, esc, floralCorner, fmtDateVi, hyMark, safeImg, safeUrl, varStyle } from './lib.js';
 
 const lines = (text) =>
@@ -24,6 +25,11 @@ const reveal = (inner) => `<div class="reveal">${inner}</div>`;
  * opts: { tpl, data, slug, guest, wishes, skipCover, rsvpDisabled }
  */
 export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], skipCover = false, rsvpDisabled = false }) {
+  if (tpl.html) {
+    let off = null; let dead = false;
+    renderHtmlTemplate(root, { tpl, data, slug, guest, wishes, skipCover, rsvpDisabled }).then((fn) => { off = fn; if (dead && fn) fn(); });
+    return () => { dead = true; if (off) off(); };
+  }
   const L = tpl.layout;
   const d = fmtDateVi(data.date);
   // Chỉ hiển thị album và ảnh chân dung khi chủ thiệp chủ động tải lên.

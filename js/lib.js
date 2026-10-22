@@ -194,6 +194,10 @@ export const TEMPLATES = [
 ];
 // Chỉ giữ 8 mẫu hoàn chỉnh; các biến thể sinh tự động chưa có dữ liệu thiết kế riêng đã bị ẩn.
 TEMPLATES.splice(8);
+// Mẫu thiết kế sẵn dạng HTML (hiển thị bằng js/html-template.js)
+TEMPLATES.unshift({ id: 'anh-dao', name: 'Anh Đào', layout: 'html', html: 'thiep/anh-dao.html', thumbImg: 'assets/thiep-anh-dao.jpg',
+  style: 'Hoa', color: 'Hồng', tags: ['Hoa', 'Anh Đào'], isNew: true,
+  vars: { bg: '#fff', paper: '#fff', ink: '#4a4a4a', muted: '#999', accent: '#dcc4c3', accent2: '#f4d9e8', hero: '#dcc4c3', heroInk: '#fff' } });
 
 // Ten layout families are assigned across the whole collection.
 const DESIGN_FAMILIES = ['classic', 'editorial', 'arch', 'frame', 'botanical', 'ornate', 'modern', 'letterpress', 'terrace', 'monogram'];
@@ -267,6 +271,7 @@ export const SAMPLE_ANH_DAO = {
 };
 
 export function thumb(tpl, { groom = 'Khang', bride = 'Hà', date = '20 · 12' } = {}) {
+  if (tpl.thumbImg) return `<div class="thumb thumb-img" style="${varStyle(tpl.vars)}" aria-hidden="true"><img src="${new URL('../' + tpl.thumbImg, import.meta.url).href}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:top"></div>`;
   return `<div class="thumb l-${tpl.layout} d-${tpl.design || 'classic'}" style="${varStyle(tpl.vars)}" aria-hidden="true">
   <div class="t-top">${tpl.layout === 'hy' ? '<div class="t-hy">囍</div>' : ''}<span class="t-kick">Thiệp mời cưới</span>
     <div class="t-names"><span>${esc(groom)}</span><i>&amp;</i><span>${esc(bride)}</span></div></div>

@@ -217,7 +217,7 @@ async function pageDemo({ params }, rid) {
   $app.innerHTML = `<div class="demo-bar"><a href="${href('/mau-thiep')}">← Tất cả mẫu</a><span>${esc(tpl.name)}</span>
     <a href="${href(`/tao-thiep?mau=${tpl.id}`)}" class="btn btn-primary btn-sm">Chọn mẫu này · ${fmtVnd(PRICE)}</a></div><div class="demo-spacer"></div><div id="demo-root"></div>`;
   const off = renderInvitation(document.getElementById('demo-root'), {
-    tpl, data: (String(tpl.id).startsWith('hoa-anh-dao-') ? SAMPLE_ANH_DAO : SAMPLE), slug: 'demo',
+    tpl, data: ((tpl.id === 'anh-dao' || String(tpl.id).startsWith('hoa-anh-dao-')) ? SAMPLE_ANH_DAO : SAMPLE), slug: 'demo',
     guest: { name: 'Anh Chị Khách Quý', token: '' },
     wishes: [
       { id: 1, name: 'Bạn Lan', attending: 1, count: 2, message: 'Chúc hai bạn trăm năm hạnh phúc, sớm có tin vui nhé!' },
