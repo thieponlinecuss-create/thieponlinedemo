@@ -43,7 +43,7 @@ export function renderInvitation(root, { tpl, data, slug, guest, wishes = [], sk
     ${guest ? `<p class="cover-guest">Trân trọng kính mời<b>${esc(guest.name)}</b></p>` : ''}
   </div>`;
 
-  root.innerHTML = `<div class="inv inv-${L}" style="${varStyle(tpl.vars)}">
+  root.innerHTML = `<div class="inv inv-${L} inv-design-${tpl.design || 'classic'}" style="${varStyle(tpl.vars)}">
   <div class="inv-shell js-ready">
     ${skipCover ? '' : `<div class="cover" role="dialog" aria-label="Thiệp mời"><div class="cover-inner">${cover}<button type="button" class="btn-open">Mở thiệp</button></div></div>`}
     ${music ? `<audio src="${esc(music)}" loop preload="none"></audio>${skipCover ? '<button type="button" class="music-btn" aria-label="Bật/tắt nhạc">♫</button>' : ''}` : ''}
