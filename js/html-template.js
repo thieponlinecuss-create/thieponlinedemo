@@ -108,7 +108,7 @@ const GIFT_CSS = `
 .hx-box b{display:block;margin-bottom:4px}.hx-box p{margin:2px 0}.hx-acc{font-size:1.15rem;font-weight:700;letter-spacing:.04em}
 .hx-card button{border:0;border-radius:10px;padding:9px 16px;background:#dcc4c3;color:#222;font-weight:600;cursor:pointer;margin:4px}
 .hx-music{position:fixed;right:14px;bottom:14px;width:44px;height:44px;border-radius:50%;border:0;background:#a52a2a;color:#fff;font-size:20px;z-index:9999;cursor:pointer}
-body{margin:0 auto}`;
+body{margin:0 auto;overflow-x:hidden}html{-webkit-text-size-adjust:100%}`;
 
 function wireGift(doc, data) {
   const btn = doc.querySelector('[data-open="iv-gift-modal"]');
@@ -191,10 +191,21 @@ export async function renderHtmlTemplate(root, opts) {
 
   const iframe = document.createElement('iframe');
   iframe.title = 'Thiệp cưới';
-  iframe.style.cssText = `display:block;width:100%;height:${slug === 'demo' ? 'calc(100vh - 56px)' : '100vh'};border:0;background:#fff`;
+  iframe.style.cssText = `display:block;width:100%;height:${slug === 'demo' ? 'calc(100vh - 56px)' : '100vh'};height:${slug === 'demo' ? 'calc(100dvh - 56px)' : '100dvh'};border:0;background:#fff`;
+  // Mẫu thiết kế rộng 420px: phóng/thu theo bề rộng màn hình (tối đa 500px) để vừa mọi điện thoại.
+  const fit = () => {
+    const w = iframe.clientWidth || window.innerWidth;
+    const z = Math.max(0.5, Math.min(w, 500) / 420);
+    const de = iframe.contentDocument?.documentElement;
+    if (de) de.style.setProperty('--cvz', String(z));
+  };
+  doc.documentElement.style.setProperty('--cvz', String(Math.max(0.5, Math.min(root.clientWidth || window.innerWidth, 500) / 420)));
+  const onResize = () => fit();
+  window.addEventListener('resize', onResize);
   iframe.addEventListener('load', () => {
     const d = iframe.contentDocument;
     if (!d) return;
+    fit();
     wireGift(d, data);
     wireRsvp(d, opts);
     wireMusic(d, data);
@@ -202,5 +213,5 @@ export async function renderHtmlTemplate(root, opts) {
   root.innerHTML = '';
   root.appendChild(iframe);
   iframe.srcdoc = '<!doctype html>' + doc.documentElement.outerHTML;
-  return () => { iframe.remove(); };
+  return () => { window.removeEventListener('resize', onResize); iframe.remove(); };
 }

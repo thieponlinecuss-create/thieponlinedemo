@@ -195,7 +195,8 @@ export const TEMPLATES = [
 // Chỉ giữ 8 mẫu hoàn chỉnh; các biến thể sinh tự động chưa có dữ liệu thiết kế riêng đã bị ẩn.
 TEMPLATES.splice(0); // đã xoá toàn bộ mẫu cũ, chỉ giữ mẫu thiết kế sẵn bên dưới
 // Mẫu thiết kế sẵn dạng HTML (hiển thị bằng js/html-template.js)
-TEMPLATES.push({ id: 'anh-dao', name: 'Anh Đào', layout: 'html', html: 'thiep/anh-dao.html', thumbImg: 'assets/thiep-anh-dao.jpg',
+// backendId: mã mà backend Apps Script đang chấp nhận (không cần sửa Code.gs). Website luôn tự hiển thị đúng mẫu Anh Đào.
+TEMPLATES.push({ id: 'anh-dao', backendId: 'toi-gian-do', name: 'Anh Đào', layout: 'html', html: 'thiep/anh-dao.html', thumbImg: 'assets/thiep-anh-dao.jpg',
   style: 'Hoa', color: 'Hồng', tags: ['Hoa', 'Anh Đào'], isNew: true,
   vars: { bg: '#fff', paper: '#fff', ink: '#4a4a4a', muted: '#999', accent: '#dcc4c3', accent2: '#f4d9e8', hero: '#dcc4c3', heroInk: '#fff' } });
 

@@ -336,7 +336,7 @@ function pageCreate(ctx) {
     btn.disabled = true;
     btn.textContent = 'Đang tạo...';
     try {
-      const r = await api('createInvitation', { template: sel, groom, bride, data: defaultData(groom, bride) });
+      const r = await api('createInvitation', { template: (getTemplate(sel)?.backendId || sel), groom, bride, data: defaultData(groom, bride) });
       try { await api('createPayment', { id: r.id }); } catch { /* tạo lại được ở tab Thanh toán */ }
       nav(`/quan-ly/${r.id}?tab=thanh-toan`);
     } catch (x) {
@@ -492,7 +492,7 @@ function mountEditor($tab, inv) {
   $tab.innerHTML = `<div class="editor">
     <form class="editor-form" id="editor-form">
       <div class="fieldset"><h3>Mẫu thiệp</h3>
-        <div class="picker" style="grid-template-columns:repeat(4,1fr);margin-bottom:0">${TEMPLATES.map((t) => `<label class="pick"><input type="radio" name="template" value="${t.id}" ${inv.template === t.id ? 'checked' : ''}>${thumb(t, { groom: lastWord(data.groomName), bride: lastWord(data.brideName) })}<span style="font-size:.75rem">${esc(t.name)}</span></label>`).join('')}</div></div>
+        <div class="picker" style="grid-template-columns:repeat(4,1fr);margin-bottom:0">${TEMPLATES.map((t) => `<label class="pick"><input type="radio" name="template" value="${t.backendId || t.id}" ${getTemplateOrDefault(inv.template).id === t.id ? 'checked' : ''}>${thumb(t, { groom: lastWord(data.groomName), bride: lastWord(data.brideName) })}<span style="font-size:.75rem">${esc(t.name)}</span></label>`).join('')}</div></div>
 
       <div class="fieldset"><h3>Cô dâu &amp; chú rể</h3>
         <div class="row2">
