@@ -153,12 +153,20 @@ function pageTemplates({ query }) {
     </div>
     ${list.length === 0
       ? `<div class="empty"><p>Không có mẫu phù hợp bộ lọc này.</p><a href="${href('/mau-thiep')}" class="btn btn-ghost">Xoá bộ lọc</a></div>`
-      : `<div class="grid-4">${list.map((t) => `<div class="tpl-card">
-          <a href="${href(`/mau-thiep/${t.id}/demo`)}" aria-label="Xem demo ${esc(t.name)}">${thumb(t)}</a>
-          <h3>${esc(t.name)}</h3>
-          <div class="tpl-meta">${t.isNew ? '<span class="tag tag-new">Mới</span>' : ''}${t.tags.map((x) => `<span class="tag">${esc(x)}</span>`).join('')}</div>
-          <div class="tpl-actions"><a href="${href(`/mau-thiep/${t.id}/demo`)}" class="btn btn-ghost">Xem demo</a><a href="${href(`/tao-thiep?mau=${t.id}`)}" class="btn btn-primary">Chọn mẫu · ${fmtVnd(PRICE)}</a></div>
-        </div>`).join('')}</div>`}
+      : `<div class="grid-4">${list.map((t) => `<article class="tpl-card tpl-card-showcase">
+          <div class="tpl-preview">
+            <a class="tpl-preview-link" href="${href(`/mau-thiep/${t.id}/demo`)}" aria-label="Xem demo ${esc(t.name)}">${thumb(t)}</a>
+            ${t.isNew ? '<span class="tpl-new-badge">Mới</span>' : ''}
+            <div class="tpl-preview-overlay">
+              <div class="tpl-preview-title">${esc(t.name)}</div>
+              <div class="tpl-preview-actions">
+                <a href="${href(`/mau-thiep/${t.id}/demo`)}" class="btn btn-demo"><span aria-hidden="true">◉</span> Xem demo</a>
+                <a href="${href(`/tao-thiep?mau=${t.id}`)}" class="btn btn-create"><span aria-hidden="true">＋</span> Tạo ngay</a>
+              </div>
+            </div>
+          </div>
+          <div class="tpl-meta">${t.tags.map((x) => `<span class="tag">${esc(x)}</span>`).join('')}</div>
+        </article>`).join('')}</div>`}
     <div class="card center" style="margin:56px auto 0;max-width:640px"><h3>Chưa thấy mẫu ưng ý?</h3><p class="muted">Hãy cho chúng mình biết bạn đang tìm phong cách nào, chúng mình sẽ thiết kế thêm mẫu mới.</p></div>
   </div>`;
 }
