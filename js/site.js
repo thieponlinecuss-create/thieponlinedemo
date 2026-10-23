@@ -2,7 +2,7 @@ import { api, getToken, setToken, uploadImage } from './api.js';
 import { renderInvitation } from './invitation.js';
 import {
   COLORS, PAID_DAYS, PRICE, SAMPLE, SAMPLE_ANH_DAO, SITE_NAME, STYLES, TEMPLATES, TRIAL_DAYS,
-  defaultData, esc, fmtTime, fmtVnd, getTemplate, getTemplateOrDefault, inviteUrl, isPaid, lastWord, loadInvitationCss,
+  defaultData, esc, fmtTime, fmtVnd, getTemplate, getTemplateOrDefault, resolveInvitationTemplate, inviteUrl, isPaid, lastWord, loadInvitationCss,
   mergeData, statusBadge, thumb, unloadInvitationCss,
 } from './lib.js';
 import { CONFIG } from './config.js';
@@ -336,7 +336,7 @@ function pageCreate(ctx) {
     btn.disabled = true;
     btn.textContent = 'Đang tạo...';
     try {
-      const r = await api('createInvitation', { template: (getTemplate(sel)?.backendId || sel), groom, bride, data: defaultData(groom, bride) });
+      const r = await api('createInvitation', { template: (getTemplate(sel)?.backendId || sel), groom, bride, data: { ...defaultData(groom, bride), designId: sel } });
       try { await api('createPayment', { id: r.id }); } catch { /* tạo lại được ở tab Thanh toán */ }
       nav(`/quan-ly/${r.id}?tab=thanh-toan`);
     } catch (x) {
@@ -360,7 +360,7 @@ async function pageDashboard(ctx, rid) {
     ${list.length === 0
       ? `<div class="empty"><h3>Bạn chưa có thiệp nào</h3><p class="muted">Tạo thiệp đầu tiên chỉ mất vài phút.</p><a href="${href('/tao-thiep')}" class="btn btn-primary">Tạo thiệp cưới</a></div>`
       : `<div class="inv-list">${list.map((inv) => {
-        const tpl = getTemplateOrDefault(inv.template);
+        const tpl = resolveInvitationTemplate(inv);
         const d = mergeData(inv.data);
         return `<div class="inv-item">${thumb(tpl, { groom: lastWord(d.groomName), bride: lastWord(d.brideName) })}
           <div><h3>${esc(d.groomName)} &amp; ${esc(d.brideName)}</h3>
@@ -492,7 +492,7 @@ function mountEditor($tab, inv) {
   $tab.innerHTML = `<div class="editor">
     <form class="editor-form" id="editor-form">
       <div class="fieldset"><h3>Mẫu thiệp</h3>
-        <div class="picker" style="grid-template-columns:repeat(4,1fr);margin-bottom:0">${TEMPLATES.map((t) => `<label class="pick"><input type="radio" name="template" value="${t.backendId || t.id}" ${getTemplateOrDefault(inv.template).id === t.id ? 'checked' : ''}>${thumb(t, { groom: lastWord(data.groomName), bride: lastWord(data.brideName) })}<span style="font-size:.75rem">${esc(t.name)}</span></label>`).join('')}</div></div>
+        <div class="picker" style="grid-template-columns:repeat(4,1fr);margin-bottom:0">${TEMPLATES.map((t) => `<label class="pick"><input type="radio" name="template" value="${t.id}" ${resolveInvitationTemplate(inv).id === t.id ? 'checked' : ''}>${thumb(t, { groom: lastWord(data.groomName), bride: lastWord(data.brideName) })}<span style="font-size:.75rem">${esc(t.name)}</span></label>`).join('')}</div></div>
 
       <div class="fieldset"><h3>Cô dâu &amp; chú rể</h3>
         <div class="row2">
