@@ -116,7 +116,7 @@ const FAQ = [
 
 function pageHome() {
   setTitle('');
-  const featured = [TEMPLATES[2], TEMPLATES[4], TEMPLATES[6], TEMPLATES[0]];
+  const featured = TEMPLATES.slice(0, 4);
   $app.innerHTML = `
   <section class="hero-home"><div class="wrap hero-grid">
     <div>
