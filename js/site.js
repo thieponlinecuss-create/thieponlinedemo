@@ -555,8 +555,9 @@ function mountEditor($tab, inv) {
     const gift = (p) => ({ bank: v(`${p}_bank`), number: v(`${p}_number`), holder: v(`${p}_holder`) });
     const payload = {
       id: inv.id,
-      template: form.elements.template.value,
+      template: (getTemplate(form.elements.template.value)?.backendId || form.elements.template.value),
       data: {
+        designId: form.elements.template.value,
         groomName: v('groomName'), brideName: v('brideName'), groomFull: v('groomFull'), brideFull: v('brideFull'),
         groomParents: v('groomParents'), brideParents: v('brideParents'),
         date: v('date'), lunarDate: v('lunarDate'), ceremonyTime: v('ceremonyTime'), partyTime: v('partyTime'),
