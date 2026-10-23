@@ -200,12 +200,27 @@ TEMPLATES.push({ id: 'anh-dao', backendId: 'toi-gian-do', name: 'Anh Đào', lay
   style: 'Hoa', color: 'Hồng', tags: ['Hoa', 'Anh Đào'], isNew: true,
   vars: { bg: '#fff', paper: '#fff', ink: '#4a4a4a', muted: '#999', accent: '#dcc4c3', accent2: '#f4d9e8', hero: '#dcc4c3', heroInk: '#fff' } });
 
+
+// Mẫu Duyên Thư 2026: mã backend dùng mã được Apps Script hiện tại chấp nhận.
+// designId được lưu cùng dữ liệu và quyết định giao diện hiển thị công khai.
+TEMPLATES.push(
+  { id:'duyen-thu-long-phung', backendId:'toi-gian-do', name:'Long Phụng', layout:'hy', style:'Truyền thống', color:'Đỏ', tags:['Đỏ vàng','Cổ điển'], isNew:true,
+    vars:{bg:'#841d29',paper:'#791923',ink:'#fbe6b7',muted:'#d6b98b',accent:'#d9ad60',accent2:'#e9ca83',hero:'#6d1420',heroInk:'#ffeac2'} },
+  { id:'duyen-thu-ngoc-diep', backendId:'toi-gian-do', name:'Ngọc Diệp', layout:'floral', style:'Hoa', color:'Xanh', tags:['Botanical','Xanh lá'], isNew:true,
+    vars:{bg:'#f5eee3',paper:'#fcf8ef',ink:'#56654d',muted:'#78826b',accent:'#647850',accent2:'#c9d3b7',hero:'#e8eddf',heroInk:'#56654d'} },
+  { id:'duyen-thu-hong-thu', backendId:'toi-gian-do', name:'Hồng Thư', layout:'floral', style:'Hoa', color:'Hồng', tags:['Pastel','Lãng mạn'], isNew:true,
+    vars:{bg:'#f9e6e2',paper:'#fff8f7',ink:'#83535c',muted:'#a97f86',accent:'#b87889',accent2:'#ecc2c0',hero:'#f3d7d6',heroInk:'#83535c'} },
+  { id:'duyen-thu-da-kim', backendId:'toi-gian-do', name:'Dạ Kim', layout:'gold', style:'Sang trọng', color:'Lam', tags:['Đen vàng','Cao cấp'], isNew:true,
+    vars:{bg:'#22211f',paper:'#2e2c28',ink:'#ddc5a0',muted:'#bea987',accent:'#c4a771',accent2:'#695b44',hero:'#1a1a19',heroInk:'#eed9aa'} },
+);
+
 // Ten layout families are assigned across the whole collection.
 const DESIGN_FAMILIES = ['classic', 'editorial', 'arch', 'frame', 'botanical', 'ornate', 'modern', 'letterpress', 'terrace', 'monogram'];
 TEMPLATES.forEach((tpl, index) => { tpl.design = DESIGN_FAMILIES[index % DESIGN_FAMILIES.length]; });
 export const getTemplate = (id) => TEMPLATES.find((t) => t.id === id);
 /** Thiệp cũ dùng mẫu đã xoá sẽ hiển thị bằng mẫu hiện có. */
 export const getTemplateOrDefault = (id) => getTemplate(id) || TEMPLATES[0];
+export const resolveInvitationTemplate = (inv) => getTemplateOrDefault(inv?.data?.designId || inv?.template);
 
 export const varStyle = (vars) => Object.entries(vars).map(([k, v]) => `--${k}:${v}`).join(';');
 
